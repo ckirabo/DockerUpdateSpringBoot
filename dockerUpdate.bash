@@ -21,15 +21,20 @@ cd spring-boot-hello-world
 mvn clean install 
 '
 
-#stop any current container and remove it
-docker build -t spring-boot-hello-world:latest .
-docker stop $(docker ps -aq)
-docker rm $(docker ps -aq)
-
-docker system prune -a 
-
-#run container
-docker run -d -p 9000:9000 spring-boot-hello-world
+project="spring-boot-hello-world"
+# create the JAR file, in the target directory
+mvn clean package
+# build the docker image
+docker build -t ${project}:latest .
+# remove the dangling container(s)
+ if docker images | grep '<none>'; then
+    docker rmi $(docker images -q -f dangling=true)
+ fi
+# remove the old container
+docker stop $(docker ps -qa) #add if stament to grep if the project exists if it does then do the following
+docker rm $(docker ps -qa)
+# run the new container
+docker run -d -p 9000:9000 --name ${project} ${project}
 
 
 
