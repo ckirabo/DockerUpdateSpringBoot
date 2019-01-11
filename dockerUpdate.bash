@@ -31,8 +31,10 @@ docker build -t ${project}:latest .
     docker rmi $(docker images -q -f dangling=true)
  fi
 # remove the old container
-docker stop $(docker ps -qa) #add if stament to grep if the project exists if it does then do the following
-docker rm $(docker ps -qa)
+if docker ps -a | grep spring-boot
+docker stop $(docker ps -a) #add if stament to grep if the project exists if it does then do the following
+docker rm $(docker ps -a)
+fin
 # run the new container
 docker run -d -p 9000:9000 --name ${project} ${project}
 
