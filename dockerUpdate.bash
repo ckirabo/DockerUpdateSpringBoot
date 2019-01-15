@@ -21,6 +21,7 @@ cd spring-boot-hello-world
 mvn clean install 
 '
 
+#written in the executable shell of jenkins 8080
 project="spring-boot-hello-world"
 # create the JAR file, in the target directory
 mvn clean package
